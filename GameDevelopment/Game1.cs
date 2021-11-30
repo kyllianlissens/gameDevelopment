@@ -7,6 +7,37 @@ using System.Linq;
 
 namespace GameDevelopment
 {
+
+
+
+    public abstract class GameState
+    {
+        protected abstract void Initialize();
+        protected abstract void Update(GameTime gameTime);
+        protected abstract void Draw(GameTime gameTime);
+
+    }
+
+    public class MenuState : GameState
+    {
+        protected override void Draw(GameTime gameTime)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void Initialize()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+
+
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -23,7 +54,7 @@ namespace GameDevelopment
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+           
 
             base.Initialize();
         }
@@ -31,7 +62,6 @@ namespace GameDevelopment
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
             List<Sprite> playerSpritesIdle = Enumerable.Range(0, 12).Select(i => new Sprite(0+i*32, 160, 32+i*32, 160+32, 0.1f)).ToList();
 
@@ -48,14 +78,15 @@ namespace GameDevelopment
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            ;
+
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
@@ -64,7 +95,6 @@ namespace GameDevelopment
             _spriteBatch.Draw(_player.Texture, new Vector2(128, 128), rectangle, Color.White);
 
             _spriteBatch.End();
-
             base.Draw(gameTime);
         }
     }
