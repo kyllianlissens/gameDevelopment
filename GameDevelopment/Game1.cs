@@ -8,6 +8,37 @@ using System.Linq;
 
 namespace GameDevelopment
 {
+
+
+
+    public abstract class GameState
+    {
+        protected abstract void Initialize();
+        protected abstract void Update(GameTime gameTime);
+        protected abstract void Draw(GameTime gameTime);
+
+    }
+
+    public class MenuState : GameState
+    {
+        protected override void Draw(GameTime gameTime)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void Initialize()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+
+
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -38,7 +69,6 @@ namespace GameDevelopment
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
 
             _heroTexture = Content.Load<Texture2D>("doctor");
@@ -57,7 +87,7 @@ namespace GameDevelopment
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
@@ -65,7 +95,6 @@ namespace GameDevelopment
             hero.Draw(_spriteBatch);
 
             _spriteBatch.End();
-
             base.Draw(gameTime);
         }
     }
