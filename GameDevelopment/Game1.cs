@@ -1,4 +1,5 @@
-﻿using GameDevelopment.Texture;
+﻿using GameDevelopment.GameObject;
+using GameDevelopment.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,12 +11,16 @@ namespace GameDevelopment
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
+        private RenderTarget2D _scene;
         private SpriteBatch _spriteBatch;
 
-        private SpriteSheet _player;
+        private Texture2D _heroTexture;
+
+        private Hero hero;
 
         public Game1()
         {
+            //_scene = new RenderTarget2D(_graphics.GraphicsDevice, 1366, 768, false, SurfaceFormat.Color, DepthFormat.None, 4, RenderTargetUsage.DiscardContents);
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -23,9 +28,11 @@ namespace GameDevelopment
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // TODO: Add your initialization logic 
 
             base.Initialize();
+
+            hero = new Hero(_heroTexture);
         }
 
         protected override void LoadContent()
@@ -33,14 +40,8 @@ namespace GameDevelopment
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            List<Sprite> playerSpritesIdle = Enumerable.Range(0, 12).Select(i => new Sprite(0+i*32, 160, 32+i*32, 160+32, 0.1f)).ToList();
 
-            _player = new SpriteSheet(
-                Content.Load<Texture2D>("doctor"),
-                new Dictionary<SpriteState, List<Sprite>>() {
-                    [SpriteState.Idle] = playerSpritesIdle
-                }
-            );
+            _heroTexture = Content.Load<Texture2D>("doctor");
         }
 
         protected override void Update(GameTime gameTime)
@@ -49,6 +50,7 @@ namespace GameDevelopment
                 Exit();
 
             // TODO: Add your update logic here
+            hero.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -57,11 +59,10 @@ namespace GameDevelopment
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+
             // TODO: Add your drawing code here
-            Sprite currentSprite = _player.GetSprite(SpriteState.Idle, gameTime.TotalGameTime);
-            Rectangle rectangle = new Rectangle(currentSprite.StartPosition.ToPoint(), new Point(32, 32));
-            _spriteBatch.Draw(_player.Texture, new Vector2(128, 128), rectangle, Color.White);
+            hero.Draw(_spriteBatch);
 
             _spriteBatch.End();
 
