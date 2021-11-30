@@ -14,7 +14,7 @@ namespace GameDevelopment.Input
             var direction = Vector2.Zero;
             if (state.IsKeyDown(Keys.Left)) direction.X -= 1; 
             if (state.IsKeyDown(Keys.Right)) direction.X += 1;
-            if (state.IsKeyDown(Keys.LeftAlt)) direction.Y -= 1;
+            if (state.IsKeyDown(Keys.LeftControl)) direction.Y -= 1;
             if (state.IsKeyDown(Keys.Space)) direction.Y += 1;
             return direction;
         }

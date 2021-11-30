@@ -90,7 +90,7 @@ namespace GameDevelopment
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            // TODO: Add your drawing code here
+
             hero.Draw(_spriteBatch);
 
             _spriteBatch.End();

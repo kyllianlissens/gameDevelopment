@@ -28,7 +28,7 @@ namespace GameDevelopment.Texture
             CurrentFrame = frames[counter];
 
             secondCounter += gameTime.ElapsedGameTime.TotalSeconds;
-            int fps = 30;
+            int fps = 15;
 
             if (secondCounter >= 1d / fps)
             {
