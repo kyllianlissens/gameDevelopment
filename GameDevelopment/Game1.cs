@@ -40,7 +40,6 @@ namespace GameDevelopment
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private 
 
         public Game1()
         {
@@ -51,7 +50,7 @@ namespace GameDevelopment
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+           
 
             base.Initialize();
         }
@@ -60,7 +59,7 @@ namespace GameDevelopment
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+      
         }
 
         protected override void Update(GameTime gameTime)
@@ -68,11 +67,7 @@ namespace GameDevelopment
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            
-
-
-            KeyboardState keyboardState = Keyboard.GetState();
-            var direction = Vector2.Zero;
+            ;
 
 
             base.Update(gameTime);
@@ -80,12 +75,10 @@ namespace GameDevelopment
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
 
 
-
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }
