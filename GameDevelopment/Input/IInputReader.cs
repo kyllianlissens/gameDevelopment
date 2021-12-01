@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GameDevelopment.Input
 {
-    internal interface IInputReader
+    public interface IInputReader
     {
         Vector2 ReadInput();
 

@@ -1,4 +1,5 @@
 ﻿using GameDevelopment.GameObject;
+using GameDevelopment.Input;
 using GameDevelopment.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -63,7 +64,7 @@ namespace GameDevelopment
 
             base.Initialize();
 
-            hero = new Hero(_heroTexture);
+            hero = new Hero(_heroTexture, new KeyboardReader());
         }
 
         protected override void LoadContent()
