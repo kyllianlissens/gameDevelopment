@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,10 +7,8 @@ namespace GameDevelopment.GameObject
 {
     public class MovementManager
     {
-        public void Move(IMovable movable)
+        public void Move(IMovable movable, Vector2 direction)
         {
-            var direction = movable.InputReader.ReadInput();
-
             var distance = direction * movable.Speed;
             var futurePosition = movable.Position + distance;
 
