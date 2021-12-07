@@ -18,7 +18,7 @@ namespace GameDevelopment.GameObject
                 
                 if (direction.Y == -1 )
                 {
-                    movable.State = IMovable.MovableState.Jumping;
+                    movable.SetState(IMovable.MovableState.Jumping);
                 }
 
                 if (movable.State == IMovable.MovableState.Jumping)
@@ -29,7 +29,7 @@ namespace GameDevelopment.GameObject
                         futurePosition.Y -= 2;
                         movable.Position = futurePosition;
                     }
-                    else movable.State = IMovable.MovableState.Falling;
+                    else movable.SetState(IMovable.MovableState.Falling);
                 }
 
                 else if (movable.State == IMovable.MovableState.Falling)
@@ -41,7 +41,7 @@ namespace GameDevelopment.GameObject
                     }
                     else
                     {
-                        movable.State = IMovable.MovableState.Idle;
+                        movable.SetState(IMovable.MovableState.Idle);
                     }
 
                 }
