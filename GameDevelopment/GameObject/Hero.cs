@@ -28,6 +28,8 @@ namespace GameDevelopment.GameObject
         private SpriteEffects lastDirection;
         private IInputReader inputReader;
 
+        private IMovable.MovableState state;
+
         public Hero(Texture2D texture, IInputReader inputReader)
         {
             this.texture = texture;
@@ -40,7 +42,7 @@ namespace GameDevelopment.GameObject
             }
             state = HeroState.Idle;
 
-            position = new Vector2(32, 32);
+            position = new Vector2(300, 300);
             speed = new Vector2(1, 1);
 
             animations[HeroState.Idle].AddFramesFromTextureProperties(32, 32, 1, 12);
@@ -83,11 +85,11 @@ namespace GameDevelopment.GameObject
                 ChangeState(HeroState.Running);
 
             movementManager.Move(this, direction);
-           
         }
 
         Vector2 IMovable.Position { get => position; set => position = value; }
         Vector2 IMovable.Speed { get => speed; set => speed = value; }
         IInputReader IMovable.InputReader { get => inputReader; set => inputReader = value; }
+        public IMovable.MovableState State { get => state; set => state = value; }
     }
 }
