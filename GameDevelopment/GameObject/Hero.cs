@@ -19,6 +19,8 @@ namespace GameDevelopment.GameObject
         private Vector2 speed;
         private IInputReader inputReader;
 
+        private IMovable.MovableState state;
+
         public Hero(Texture2D texture, IInputReader inputReader)
         {
             this.texture = texture;
@@ -26,7 +28,7 @@ namespace GameDevelopment.GameObject
             movementManager = new MovementManager();
             animation = new Animation();
 
-            position = new Vector2(32, 32);
+            position = new Vector2(300, 300);
             speed = new Vector2(1, 1);
             
             //TODO: Implement the GetFramesFromTextureProperties function animation.GetFramesFromTextureProperties(texture.Width, texture.Height, 12, 6);
@@ -44,6 +46,7 @@ namespace GameDevelopment.GameObject
         {
             spriteBatch.Draw(texture, position, animation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(0,0), 2f, SpriteEffects.None, 0);
 
+
         }
 
         public void Update(GameTime gameTime)
@@ -57,11 +60,11 @@ namespace GameDevelopment.GameObject
         private void Move()
         {
             movementManager.Move(this);
-           
         }
 
         Vector2 IMovable.Position { get => position; set => position = value; }
         Vector2 IMovable.Speed { get => speed; set => speed = value; }
         IInputReader IMovable.InputReader { get => inputReader; set => inputReader = value; }
+        public IMovable.MovableState State { get => state; set => state = value; }
     }
 }
