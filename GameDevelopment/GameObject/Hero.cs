@@ -9,14 +9,23 @@ using System.Text;
 
 namespace GameDevelopment.GameObject
 {
+    public enum HeroState
+    {
+        Idle,
+        Walking,
+        Running,
+        Attacking
+    }
     public class Hero : IGameObject, IMovable
     {
         private Texture2D texture;
         private MovementManager movementManager;
-        private Animation animation;
+        private Dictionary<HeroState, Animation> animations;
+        private HeroState state;
 
         private Vector2 position;
         private Vector2 speed;
+        private SpriteEffects lastDirection;
         private IInputReader inputReader;
 
         private IMovable.MovableState state;
@@ -26,40 +35,56 @@ namespace GameDevelopment.GameObject
             this.texture = texture;
             this.inputReader = inputReader;
             movementManager = new MovementManager();
-            animation = new Animation();
+            animations = new Dictionary<HeroState, Animation>();
+            foreach (HeroState heroState in Enum.GetValues(typeof(HeroState)))
+            {
+                animations.Add(heroState, new Animation());
+            }
+            state = HeroState.Idle;
 
             position = new Vector2(300, 300);
             speed = new Vector2(1, 1);
-            
-            //TODO: Implement the GetFramesFromTextureProperties function animation.GetFramesFromTextureProperties(texture.Width, texture.Height, 12, 6);
 
-
-            for (int i = 0; i < 8; i++)
-            {
-                animation.AddFrame(new AnimationFrame(new Rectangle(0 + i * 32, 32, 32, 32)));
-            }
+            animations[HeroState.Idle].AddFramesFromTextureProperties(32, 32, 1, 12);
+            animations[HeroState.Walking].AddFramesFromTextureProperties(32, 32, 2, 8);
         }
 
-       
+        private void ChangeState(HeroState newState)
+        {
+            if (newState != state)
+                animations[newState].ResetFrame();
+            state = newState;
+        }
+
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, animation.CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(0,0), 2f, SpriteEffects.None, 0);
-
-
+            spriteBatch.Draw(texture, position, animations[state].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(0,0), 2f, this.lastDirection, 0);
         }
 
         public void Update(GameTime gameTime)
         {
             Move();
-            animation.Update(gameTime);
-            
+            animations[state].Update(gameTime);
         }
-
 
         private void Move()
         {
-            movementManager.Move(this);
+            Vector2 direction = ((IMovable)this).InputReader.ReadInput();
+
+            if (direction.X == 1)
+                lastDirection = SpriteEffects.None;
+            else if (direction.X == -1)
+                lastDirection = SpriteEffects.FlipHorizontally;
+            
+            if (direction.X == 0f)
+                ChangeState(HeroState.Idle);
+            else if (Math.Abs(direction.X) == 1f)
+                ChangeState(HeroState.Walking);
+            else
+                ChangeState(HeroState.Running);
+
+            movementManager.Move(this, direction);
         }
 
         Vector2 IMovable.Position { get => position; set => position = value; }

@@ -22,6 +22,13 @@ namespace GameDevelopment.Texture
             CurrentFrame = frames[0];
         }
 
+        public void ResetFrame()
+        {
+            CurrentFrame = frames[0];
+            counter = 0;
+            secondCounter = 0;
+        }
+
         public void GetFramesFromTextureProperties(int width, int height, int numberOfWidthSprites, int numberOfHeightSprites)
         {
             int widthOfFrame = width / numberOfWidthSprites;
@@ -35,6 +42,14 @@ namespace GameDevelopment.Texture
                 }
             }
 
+        }
+
+        public void AddFramesFromTextureProperties(int widthOfFrame, int heightOfFrame, int rowOfSprites, int numberOfSprites)
+        {
+            for (int i = 0; i < numberOfSprites; i++)
+            {
+                frames.Add(new AnimationFrame(new Rectangle(0 + i * widthOfFrame, (rowOfSprites-1)*heightOfFrame, widthOfFrame, heightOfFrame)));
+            }
         }
 
         private double secondCounter = 0;
