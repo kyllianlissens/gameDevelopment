@@ -26,12 +26,12 @@ namespace GameDevelopment.GameObject
         {
             this.texture = texture;
             this.inputReader = inputReader;
-            movementManager = new MovementManager();
+            movementManager = new MovementManager(800, 480, 64, 64);
             animations = new Dictionary<IMovable.MovableState, Animation>();
             State = IMovable.MovableState.Idle;
 
             position = new Vector2(300, 300);
-            speed = new Vector2(1, 1);
+            speed = new Vector2(0, 0);
 
             animations[IMovable.MovableState.Idle] = new Animation();
             animations[IMovable.MovableState.Idle].AddFramesFromTextureProperties(32, 32, 1, 12);
@@ -72,15 +72,8 @@ namespace GameDevelopment.GameObject
                 lastDirection = SpriteEffects.None;
             else if (direction.X == -1)
                 lastDirection = SpriteEffects.FlipHorizontally;
-            
-            //if (direction.X == 0f)
-            //    ChangeState(IMovable.MovableState.Idle);
-            //else if (Math.Abs(direction.X) == 1f)
-            //    ChangeState(IMovable.MovableState.Walking);
-            //else
-            //    ChangeState(IMovable.MovableState.Running);
 
-            movementManager.Move(this, direction);
+            movementManager.Update(this, direction);
         }
 
         Vector2 IMovable.Position { get => position; set => position = value; }
