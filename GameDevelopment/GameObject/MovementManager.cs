@@ -31,6 +31,8 @@ namespace GameDevelopment.GameObject
         }
         public void Update(IMovable movable, Vector2 direction)
         {
+
+
             if (direction.Y == 1f && !IsGrounded(movable)) Accelerate(movable, 0, BaseSpeed); // Ctrl
             else if (direction.Y == -1f && IsGrounded(movable)) Accelerate(movable, 0, -JumpHeight); // Space
             if (direction.X == -1f) Move(movable, -BaseSpeed, 0); // Left

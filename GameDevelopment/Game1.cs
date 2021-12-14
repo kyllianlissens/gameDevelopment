@@ -46,7 +46,7 @@ namespace GameDevelopment
         private GraphicsDeviceManager _graphics;
         private RenderTarget2D _scene;
         private SpriteBatch _spriteBatch;
-
+        private MapManager _mapManager;
         private Texture2D _heroTexture;
         private Texture2D _mapTexture;
 
@@ -57,29 +57,13 @@ namespace GameDevelopment
         private List<Block> blocks = new List<Block>();
         public Game1()
         {
-            gameboard = new int[,]
-            {
-                { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
-                { 1,1,1,1,1,1,1,1 }
-            };
-
-
-
-
-           
 
             //_scene = new RenderTarget2D(_graphics.GraphicsDevice, 1366, 768, false, SurfaceFormat.Color, DepthFormat.None, 4, RenderTargetUsage.DiscardContents);
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            //CreateBlocks();
+           
 
         }
 
@@ -90,6 +74,23 @@ namespace GameDevelopment
             base.Initialize();
 
             hero = new Hero(_heroTexture, new KeyboardReader());
+
+            _mapManager = MapManager.getInstance();
+
+            _mapManager.addMap(new int[,]
+            {
+                { 0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,0,0,0,0 },
+                { 1,1,1,1,1,1,1,1 }
+            }, _mapTexture);
+
+
+            _mapManager.selectMap(0);
         }
 
         protected override void LoadContent()
@@ -98,7 +99,7 @@ namespace GameDevelopment
             // TODO: use this.Content to load your game content here
 
             _heroTexture = Content.Load<Texture2D>("doctor");
-            _mapTexture = Content.Load<Texture2D>("doctor");
+            _mapTexture = Content.Load<Texture2D>("map");
         }
 
         protected override void Update(GameTime gameTime)
@@ -120,27 +121,13 @@ namespace GameDevelopment
 
 
             hero.Draw(_spriteBatch);
-            foreach (var block in blocks) block.Draw(_spriteBatch);
+            _mapManager.currentMap.Draw(_spriteBatch);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
-        private void CreateBlocks()
-        {
-            for (int y = 0; y < gameboard.GetLength(0); y++)
-            {
-                for (int x = 0; x < gameboard.GetLength(1); x++)
-                {
-                    if (gameboard[y, x] == 1)
-                    {
-                        blocks.Add(new Block(
-                            x, y,
-                            GraphicsDevice
-                            ));
-                    }
-                }
-            }
-        }
+       
     }
 }
