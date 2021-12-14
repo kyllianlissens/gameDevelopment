@@ -44,9 +44,9 @@ namespace GameDevelopment.Texture
 
         }
 
-        public void AddFramesFromTextureProperties(int widthOfFrame, int heightOfFrame, int rowOfSprites, int numberOfSprites)
+        public void AddFramesFromTextureProperties(int widthOfFrame, int heightOfFrame, int rowOfSprites, int numberOfSprites, int startSprite = 1, int endSprite = int.MaxValue - 1)
         {
-            for (int i = 0; i < numberOfSprites; i++)
+            for (int i = Math.Max(0, startSprite-1); i < Math.Min(numberOfSprites, endSprite); i++)
             {
                 frames.Add(new AnimationFrame(new Rectangle(0 + i * widthOfFrame, (rowOfSprites-1)*heightOfFrame, widthOfFrame, heightOfFrame)));
             }

@@ -9,19 +9,11 @@ using System.Text;
 
 namespace GameDevelopment.GameObject
 {
-    public enum HeroState
-    {
-        Idle,
-        Walking,
-        Running,
-        Attacking
-    }
     public class Hero : IGameObject, IMovable
     {
         private Texture2D texture;
         private MovementManager movementManager;
-        private Dictionary<HeroState, Animation> animations;
-        private HeroState state;
+        private Dictionary<IMovable.MovableState, Animation> animations;
 
         private Vector2 position;
         private Vector2 speed;
@@ -34,38 +26,42 @@ namespace GameDevelopment.GameObject
         {
             this.texture = texture;
             this.inputReader = inputReader;
-            movementManager = new MovementManager();
-            animations = new Dictionary<HeroState, Animation>();
-            foreach (HeroState heroState in Enum.GetValues(typeof(HeroState)))
-            {
-                animations.Add(heroState, new Animation());
-            }
-            state = HeroState.Idle;
+            movementManager = new MovementManager(800, 480, 64, 64);
+            animations = new Dictionary<IMovable.MovableState, Animation>();
+            State = IMovable.MovableState.Idle;
 
             position = new Vector2(300, 300);
-            speed = new Vector2(1, 1);
+            speed = new Vector2(0, 0);
 
-            animations[HeroState.Idle].AddFramesFromTextureProperties(32, 32, 1, 12);
-            animations[HeroState.Walking].AddFramesFromTextureProperties(32, 32, 2, 8);
+            animations[IMovable.MovableState.Idle] = new Animation();
+            animations[IMovable.MovableState.Idle].AddFramesFromTextureProperties(32, 32, 1, 12);
+            animations[IMovable.MovableState.Running] = new Animation();
+            animations[IMovable.MovableState.Running].AddFramesFromTextureProperties(32, 32, 2, 8);
+            animations[IMovable.MovableState.Walking] = new Animation();
+            animations[IMovable.MovableState.Walking].AddFramesFromTextureProperties(32, 32, 2, 8);
+            animations[IMovable.MovableState.Falling] = new Animation();
+            animations[IMovable.MovableState.Falling].AddFramesFromTextureProperties(32, 32, 5, 4, 2, 2);
+            animations[IMovable.MovableState.Jumping] = new Animation();
+            animations[IMovable.MovableState.Jumping].AddFramesFromTextureProperties(32, 32, 2, 2, 2, 2);
         }
 
-        private void ChangeState(HeroState newState)
+        void IMovable.SetState(IMovable.MovableState newState)
         {
-            if (newState != state)
+            if (newState != State)
                 animations[newState].ResetFrame();
-            state = newState;
+            State = newState;
         }
 
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, animations[state].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(0,0), 2f, this.lastDirection, 0);
+            spriteBatch.Draw(texture, position, animations[State].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(0,0), 2f, this.lastDirection, 0);
         }
 
         public void Update(GameTime gameTime)
         {
             Move();
-            animations[state].Update(gameTime);
+            animations[State].Update(gameTime);
         }
 
         private void Move()
@@ -76,15 +72,8 @@ namespace GameDevelopment.GameObject
                 lastDirection = SpriteEffects.None;
             else if (direction.X == -1)
                 lastDirection = SpriteEffects.FlipHorizontally;
-            
-            if (direction.X == 0f)
-                ChangeState(HeroState.Idle);
-            else if (Math.Abs(direction.X) == 1f)
-                ChangeState(HeroState.Walking);
-            else
-                ChangeState(HeroState.Running);
 
-            movementManager.Move(this, direction);
+            movementManager.Update(this, direction);
         }
 
         Vector2 IMovable.Position { get => position; set => position = value; }
