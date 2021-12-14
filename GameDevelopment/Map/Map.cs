@@ -7,7 +7,7 @@ namespace GameDevelopment.Map
 {
     internal class Map
     {
-        private List<Block> blocks = new List<Block>();
+        public List<Block> blocks = new List<Block>();
 
         public Map(int[,] mapArray, Texture2D mapTexture)
         {

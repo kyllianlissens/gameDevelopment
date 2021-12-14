@@ -1,4 +1,5 @@
 ﻿using GameDevelopment.Input;
+using GameDevelopment.Map;
 using GameDevelopment.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -72,6 +73,37 @@ namespace GameDevelopment.GameObject
                 lastDirection = SpriteEffects.None;
             else if (direction.X == -1)
                 lastDirection = SpriteEffects.FlipHorizontally;
+
+            //TODO: Collision detection
+            /*
+             * public static void CheckCollision(CharacterController character, CollisionObject collisionObject)
+                {
+                    if (character.collider.Intersects(collisionObject.collider))
+                    {
+                        if (character.collider.Bottom <= collisionObject.collider.Top+10)
+                        {
+                            character.isGrounded = true;
+                            character.y = collisionObject.collider.Top - character.collider.Height;
+                        }
+                        else if (character.collider.Right > collisionObject.collider.Left & character.collider.Left < collisionObject.collider.Left)
+                        {
+                            character.x = collisionObject.collider.Left - character.collider.Width-character.xCollisionOffset;
+                        }
+                        else if (character.collider.Left < collisionObject.collider.Right & character.collider.Right > collisionObject.collider.Right)
+                        {
+                            character.x = collisionObject.collider.Right-character.xCollisionOffset;
+                        }
+                    }
+             }
+          
+             */
+            foreach (var block in MapManager.getInstance().currentMap.blocks)
+            {
+                if (texture.Bounds.Intersects(block.BoundingBox))
+                {
+                    direction.Y = block.BoundingBox.Top - texture.Bounds.Height;
+                }
+            }
 
             movementManager.Update(this, direction);
         }

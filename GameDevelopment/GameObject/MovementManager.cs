@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameDevelopment.Map;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,7 +32,7 @@ namespace GameDevelopment.GameObject
         }
         public void Update(IMovable movable, Vector2 direction)
         {
-
+            
 
             if (direction.Y == 1f && !IsGrounded(movable)) Accelerate(movable, 0, BaseSpeed); // Ctrl
             else if (direction.Y == -1f && IsGrounded(movable)) Accelerate(movable, 0, -JumpHeight); // Space
