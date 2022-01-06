@@ -49,3 +49,10 @@
 /processorParam:TextureFormat=Color
 /build:Plague_Doctor_Sprite_Sheet.png;doctor.png
 
+#begin scoreFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:scoreFont.spritefont
+

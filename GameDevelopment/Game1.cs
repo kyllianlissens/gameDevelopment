@@ -50,13 +50,12 @@ namespace GameDevelopment
         private Texture2D _heroTexture;
         private Texture2D _mapTexture;
         private Texture2D _backgroundTexture;
+        private SpriteFont _font;
 
         private Hero hero;
         private Background background;
+        private int score = 0;
 
-        private int[,] gameboard;
-
-        private List<Block> blocks = new List<Block>();
         public Game1()
         {
 
@@ -105,6 +104,7 @@ namespace GameDevelopment
             _heroTexture = Content.Load<Texture2D>("doctor");
             _mapTexture = Content.Load<Texture2D>("map");
             _backgroundTexture = Content.Load<Texture2D>("background");
+            _font = Content.Load<SpriteFont>("scoreFont");
         }
 
         protected override void Update(GameTime gameTime)
@@ -115,6 +115,8 @@ namespace GameDevelopment
             hero.Update(gameTime);
 
             base.Update(gameTime);
+
+            score++;
         }
 
         protected override void Draw(GameTime gameTime)
@@ -123,11 +125,15 @@ namespace GameDevelopment
             GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-
+            
             background.Draw(_spriteBatch);
-            hero.Draw(_spriteBatch);
-            _mapManager.currentMap.Draw(_spriteBatch);
+            _spriteBatch.DrawString(_font, "Score: " + score, new Vector2(0, 0), Color.Red);
 
+            _mapManager.currentMap.Draw(_spriteBatch);
+            hero.Draw(_spriteBatch);
+
+            
+         
             _spriteBatch.End();
 
             base.Draw(gameTime);
