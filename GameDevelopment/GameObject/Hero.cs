@@ -97,13 +97,7 @@ namespace GameDevelopment.GameObject
              }
           
              */
-            foreach (var block in MapManager.getInstance().currentMap.blocks)
-            {
-                if (texture.Bounds.Intersects(block.BoundingBox))
-                {
-                    direction.Y = block.BoundingBox.Top - texture.Bounds.Height;
-                }
-            }
+           
 
             movementManager.Update(this, direction);
         }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace GameDevelopment.Map
 {
-    class Block : IGameObject
+    class Block : IGameObject, ICollidable
     {
         public Rectangle BoundingBox { get; set; }
         public Color Color { get; set; }
@@ -18,7 +18,9 @@ namespace GameDevelopment.Map
 
         public Block(int x, int y, Texture2D texture)
         {
-            BoundingBox = new Rectangle(x,y, (int)(32 * scale), (int)(32 * scale));
+            
+            //TODO: Recode to replace 8 with current mapSize 
+            BoundingBox = new Rectangle(x * (Configuration.viewportWidth / 8), (Configuration.viewportHeight - (Configuration.defaultTileSize * y)), Configuration.viewportWidth / 8, texture.Bounds.Height);
             Color = Color.White;
             Passable = false;
             Texture = texture;
@@ -28,12 +30,27 @@ namespace GameDevelopment.Map
         public void Draw(SpriteBatch spriteBatch)
         {
 
-            spriteBatch.Draw(Texture, new Vector2((BoundingBox.X * scale) * Texture.Width , (640 - Texture.Height) - (BoundingBox.Y *Texture.Height )), null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+            
+
+            Texture2D _texture;
+
+            _texture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            _texture.SetData(new Color[] { Color.DarkSlateGray });
+
+          
+            spriteBatch.Draw(_texture, BoundingBox, Color.Red);
+
+            //spriteBatch.Draw(_texture, new Vector2((BoundingBox.X * scale) * Texture.Width , (640 - Texture.Height) - (BoundingBox.Y *Texture.Height )), null, Color.Red, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
         }
 
         public void Update(GameTime gameTime)
         {
             throw new NotImplementedException();
+        }
+
+        public bool CheckCollision(Rectangle rec)
+        {
+            return BoundingBox.Intersects(rec);
         }
     }
 }

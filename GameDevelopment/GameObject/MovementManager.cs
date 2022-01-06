@@ -53,6 +53,9 @@ namespace GameDevelopment.GameObject
         {
             movable.Position = new Vector2(movable.Position.X + deltaX, movable.Position.Y + deltaY);
 
+
+
+
             bool touchingBounds = movable.Position.Y == 0f;
             if (touchingBounds)
             {

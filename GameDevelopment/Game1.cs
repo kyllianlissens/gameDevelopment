@@ -49,8 +49,10 @@ namespace GameDevelopment
         private MapManager _mapManager;
         private Texture2D _heroTexture;
         private Texture2D _mapTexture;
+        private Texture2D _backgroundTexture;
 
         private Hero hero;
+        private Background background;
 
         private int[,] gameboard;
 
@@ -74,7 +76,8 @@ namespace GameDevelopment
             base.Initialize();
 
             hero = new Hero(_heroTexture, new KeyboardReader());
-
+            background = new Background(_backgroundTexture);
+            background.Initialize();
             _mapManager = MapManager.getInstance();
 
             _mapManager.addMap(new int[,]
@@ -85,12 +88,18 @@ namespace GameDevelopment
                 { 0,0,0,0,0,0,0,0 },
                 { 0,0,0,0,0,0,0,0 },
                 { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,1,0,0,0 },
                 { 1,1,1,1,1,1,1,1 }
             }, _mapTexture);
 
 
             _mapManager.selectMap(0);
+
+            //_graphics.PreferredBackBufferWidth = _mapManager.currentMap.map.GetLength(1) * Configuration.defaultTileSize;
+            //_graphics.PreferredBackBufferHeight = _mapManager.currentMap.map.GetLength(0) * Configuration.defaultTileSize;
+            //_graphics.ApplyChanges();
+
+            //_spriteBatch.GraphicsDevice.Viewport = new Viewport(0, 0, _mapManager.currentMap.map.GetLength(1) * Configuration.defaultTileSize, _mapManager.currentMap.map.GetLength(0) * Configuration.defaultTileSize);
         }
 
         protected override void LoadContent()
@@ -100,6 +109,7 @@ namespace GameDevelopment
 
             _heroTexture = Content.Load<Texture2D>("doctor");
             _mapTexture = Content.Load<Texture2D>("map");
+            _backgroundTexture = Content.Load<Texture2D>("background");
         }
 
         protected override void Update(GameTime gameTime)
@@ -119,7 +129,7 @@ namespace GameDevelopment
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-
+            //background.Draw(_spriteBatch);
             hero.Draw(_spriteBatch);
             _mapManager.currentMap.Draw(_spriteBatch);
 
