@@ -9,6 +9,7 @@ namespace GameDevelopment.Map
 {
     class Block : IGameObject, ICollidable
     {
+        public Vector2 Position { get; set; }
         public Rectangle BoundingBox { get; set; }
         public Color Color { get; set; }
         public bool Passable { get; set; }
@@ -29,16 +30,12 @@ namespace GameDevelopment.Map
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            //Texture2D _texture;
 
-            
-
-            Texture2D _texture;
-
-            _texture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-            _texture.SetData(new Color[] { Color.DarkSlateGray });
-
+            //_texture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            //_texture.SetData(new Color[] { Color.DarkSlateGray });
           
-            spriteBatch.Draw(_texture, BoundingBox, Color.Red);
+            spriteBatch.Draw(Texture, BoundingBox, Color.Red);
 
             //spriteBatch.Draw(_texture, new Vector2((BoundingBox.X * scale) * Texture.Width , (640 - Texture.Height) - (BoundingBox.Y *Texture.Height )), null, Color.Red, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
         }

@@ -84,9 +84,9 @@ namespace GameDevelopment
                 { 0,0,0,0,0,0,0,0 },
                 { 0,0,0,0,0,0,0,0 },
                 { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
+                { 0,0,1,0,0,1,0,0 },
+                { 0,1,0,0,0,0,0,1 },
+                { 1,0,0,0,0,0,1,0 },
                 { 0,0,0,0,1,0,0,0 },
                 { 1,1,1,1,1,1,1,1 }
             }, _mapTexture);
@@ -132,8 +132,23 @@ namespace GameDevelopment
             _mapManager.currentMap.Draw(_spriteBatch);
             hero.Draw(_spriteBatch);
 
-            
-         
+            // Draw collisions for debugging
+            //bool debugCollisions = true;
+            //if (debugCollisions)
+            //{
+            //    var t = new Texture2D(GraphicsDevice, 1, 1);
+            //    t.SetData(new[] { Color.Red });
+            //    foreach (Rectangle boundingBox in _mapManager.currentMap.blocks.Select(x => x.BoundingBox).Concat(new List<Rectangle>() { hero.BoundingBox }))
+            //    {
+            //        int bw = 2; // Border width
+
+            //        _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Left
+            //        _spriteBatch.Draw(t, new Rectangle(boundingBox.Right, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Right
+            //        _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, boundingBox.Width, bw), Color.Black); // Top
+            //        _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Bottom, boundingBox.Width, bw), Color.Black); // Bottom
+            //    }
+            //}
+
             _spriteBatch.End();
 
             base.Draw(gameTime);

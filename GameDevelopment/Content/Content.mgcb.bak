@@ -25,7 +25,7 @@
 /processorParam:TextureFormat=Color
 /build:background.png
 
-#begin Untitled.png
+#begin D:/Downloads/Untitled.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -35,7 +35,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Untitled.png;map.png
+/build:D:/Downloads/Untitled.png;map.png
 
 #begin Plague_Doctor_Sprite_Sheet.png
 /importer:TextureImporter

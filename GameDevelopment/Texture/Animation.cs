@@ -66,10 +66,7 @@ namespace GameDevelopment.Texture
                 secondCounter = 0;
             }
 
-            if (counter >= frames.Count)
-            {
-                counter = 0;
-            }
+            counter = (counter + 1) % frames.Count;
         }
 
     }
