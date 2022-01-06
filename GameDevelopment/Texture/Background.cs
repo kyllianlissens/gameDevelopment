@@ -17,17 +17,11 @@ namespace GameDevelopment.Texture
 
         public void Initialize()
         {
-            this.rectangle = new Rectangle(0, 0, 816, 316);
+            this.rectangle = new Rectangle(0, 0, Configuration.viewportWidth, Configuration.viewportHeight);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            for (int x = 0; x < 800; x += 16)
-            {
-                for (int y = 0; y < 480; y += 16)
-                {
-                    spriteBatch.Draw(texture, new Vector2(x, y), rectangle, Color.White);
-                }
-            }
+            spriteBatch.Draw(texture, rectangle, Color.White);
 
         }
     }

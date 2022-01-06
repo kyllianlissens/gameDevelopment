@@ -95,11 +95,6 @@ namespace GameDevelopment
 
             _mapManager.selectMap(0);
 
-            //_graphics.PreferredBackBufferWidth = _mapManager.currentMap.map.GetLength(1) * Configuration.defaultTileSize;
-            //_graphics.PreferredBackBufferHeight = _mapManager.currentMap.map.GetLength(0) * Configuration.defaultTileSize;
-            //_graphics.ApplyChanges();
-
-            //_spriteBatch.GraphicsDevice.Viewport = new Viewport(0, 0, _mapManager.currentMap.map.GetLength(1) * Configuration.defaultTileSize, _mapManager.currentMap.map.GetLength(0) * Configuration.defaultTileSize);
         }
 
         protected override void LoadContent()
@@ -129,7 +124,7 @@ namespace GameDevelopment
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            //background.Draw(_spriteBatch);
+            background.Draw(_spriteBatch);
             hero.Draw(_spriteBatch);
             _mapManager.currentMap.Draw(_spriteBatch);
 
