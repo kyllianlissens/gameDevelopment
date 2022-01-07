@@ -24,7 +24,7 @@ namespace GameDevelopment.GameObject
 
         private IMovable.MovableState state;
 
-        public Rectangle BoundingBox => new Rectangle((int)position.X, (int)position.Y, (int)(32 * scale), (int)(32 * scale));
+        public Rectangle BoundingBox => new Rectangle((int)position.X, (int)position.Y, (int)(24 * scale), (int)(30 * scale));
 
         public Hero(Texture2D texture, IInputReader inputReader)
         {
@@ -60,7 +60,11 @@ namespace GameDevelopment.GameObject
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, animations[State].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(0,0), scale, lastDirection, 0);
+            float boundingBoxOffsetWidth = (32f - BoundingBox.Width/scale) / scale;
+            if (lastDirection == SpriteEffects.None) boundingBoxOffsetWidth -= 3.5f;
+            else boundingBoxOffsetWidth += 2f;
+            float boundingBoxOffsetHeight = (32f - BoundingBox.Height/scale);
+            spriteBatch.Draw(texture, position, animations[State].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(boundingBoxOffsetWidth, boundingBoxOffsetHeight), scale, lastDirection, 0);
         }
 
         public void Update(GameTime gameTime)
