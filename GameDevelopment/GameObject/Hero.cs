@@ -13,6 +13,7 @@ namespace GameDevelopment.GameObject
     public class Hero : IGameObject, IMovable
     {
         private Texture2D texture;
+        private int scale;
         private MovementManager movementManager;
         private Dictionary<IMovable.MovableState, Animation> animations;
 
@@ -23,9 +24,12 @@ namespace GameDevelopment.GameObject
 
         private IMovable.MovableState state;
 
+        public Rectangle BoundingBox => new Rectangle((int)position.X, (int)position.Y, (int)(32 * scale), (int)(32 * scale));
+
         public Hero(Texture2D texture, IInputReader inputReader)
         {
             this.texture = texture;
+            scale = 2;
             this.inputReader = inputReader;
             movementManager = new MovementManager(800, 480, 64, 64);
             animations = new Dictionary<IMovable.MovableState, Animation>();
@@ -56,7 +60,7 @@ namespace GameDevelopment.GameObject
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, animations[State].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(0,0), 2f, this.lastDirection, 0);
+            spriteBatch.Draw(texture, position, animations[State].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(0,0), scale, lastDirection, 0);
         }
 
         public void Update(GameTime gameTime)
@@ -97,12 +101,18 @@ namespace GameDevelopment.GameObject
              }
           
              */
-           
+            //foreach (var block in MapManager.getInstance().currentMap.blocks)
+            //{
+            //    if (texture.Bounds.Intersects(block.BoundingBox))
+            //    {
+            //        direction.Y = block.BoundingBox.Top - texture.Bounds.Height;
+            //    }
+            //}
 
             movementManager.Update(this, direction);
         }
 
-        Vector2 IMovable.Position { get => position; set => position = value; }
+        Vector2 IGameObject.Position { get => position; set => position = value; }
         Vector2 IMovable.Speed { get => speed; set => speed = value; }
         IInputReader IMovable.InputReader { get => inputReader; set => inputReader = value; }
         public IMovable.MovableState State { get => state; set => state = value; }

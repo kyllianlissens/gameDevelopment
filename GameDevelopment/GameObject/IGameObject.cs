@@ -6,8 +6,10 @@ using System.Text;
 
 namespace GameDevelopment.GameObject
 {
-    internal interface IGameObject
+    public interface IGameObject
     {
+        public Vector2 Position { get; set; }
+        public Rectangle BoundingBox { get; }
         void Update(GameTime gameTime);
         void Draw(SpriteBatch spriteBatch);
 
