@@ -18,8 +18,12 @@ namespace GameDevelopment.Map
         {
             
             //TODO: Recode to replace 8 with current mapSize 
-            BoundingBox = new Rectangle(x * (Configuration.viewportWidth / 8), (Configuration.viewportHeight - (Configuration.defaultTileSize * y)), Configuration.viewportWidth / 8, texture.Bounds.Height);
-            Position= new Vector2(x, y);
+            BoundingBox = new Rectangle(x * (Configuration.viewportWidth / MapManager.getInstance().currentMap.MapWidth), (Configuration.viewportHeight - (Configuration.defaultTileSize * y)), Configuration.viewportWidth / MapManager.getInstance().currentMap.MapWidth, texture.Bounds.Height);
+
+            var width = MapManager.getInstance().currentMap.MapHeight;
+
+
+            Position = new Vector2(x, y);
             Texture = texture;
 
         }
