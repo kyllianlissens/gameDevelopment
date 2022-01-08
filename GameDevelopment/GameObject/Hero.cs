@@ -25,7 +25,6 @@ namespace GameDevelopment.GameObject
         private IMovable.MovableState state;
 
         public Rectangle BoundingBox => new Rectangle((int)position.X, (int)position.Y, (int)(24 * scale), (int)(30 * scale));
-
         public Hero(Texture2D texture, IInputReader inputReader)
         {
             this.texture = texture;

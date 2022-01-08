@@ -48,7 +48,8 @@ namespace GameDevelopment
         private SpriteBatch _spriteBatch;
         private MapManager _mapManager;
         private Texture2D _heroTexture;
-        private Texture2D _mapTexture;
+        private Texture2D _blockTexture;
+        private Texture2D _spikeTexture;
         private Texture2D _backgroundTexture;
         private SpriteFont _font;
 
@@ -81,18 +82,18 @@ namespace GameDevelopment
 
             _mapManager.addMap(new int[,]
             {
-                { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0 },
-                { 0,0,1,0,0,1,0,0 },
-                { 0,1,0,0,0,0,0,1 },
-                { 1,0,0,0,0,0,1,0 },
-                { 0,0,0,0,1,0,0,0 },
-                { 1,1,1,1,1,1,1,1 }
-            }, _mapTexture);
+                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                { 0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                { 0,1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                { 1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }
+            }, _blockTexture, _spikeTexture);
 
 
-            _mapManager.selectMap(0);
+           
 
         }
 
@@ -102,7 +103,8 @@ namespace GameDevelopment
             // TODO: use this.Content to load your game content here
 
             _heroTexture = Content.Load<Texture2D>("doctor");
-            _mapTexture = Content.Load<Texture2D>("map");
+            _blockTexture = Content.Load<Texture2D>("block");
+            _spikeTexture = Content.Load<Texture2D>("spike");
             _backgroundTexture = Content.Load<Texture2D>("background");
             _font = Content.Load<SpriteFont>("scoreFont");
         }
@@ -132,22 +134,23 @@ namespace GameDevelopment
             _mapManager.currentMap.Draw(_spriteBatch);
             hero.Draw(_spriteBatch);
 
-            // Draw collisions for debugging
-            //bool debugCollisions = true;
-            //if (debugCollisions)
-            //{
-            //    var t = new Texture2D(GraphicsDevice, 1, 1);
-            //    t.SetData(new[] { Color.Red });
-            //    foreach (Rectangle boundingBox in _mapManager.currentMap.blocks.Select(x => x.BoundingBox).Concat(new List<Rectangle>() { hero.BoundingBox }))
-            //    {
-            //        int bw = 2; // Border width
+            //Draw collisions for debugging
 
-            //        _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Left
-            //        _spriteBatch.Draw(t, new Rectangle(boundingBox.Right, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Right
-            //        _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, boundingBox.Width, bw), Color.Black); // Top
-            //        _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Bottom, boundingBox.Width, bw), Color.Black); // Bottom
-            //    }
-            //}
+           //bool debugCollisions = true;
+           // if (debugCollisions)
+           //     {
+           //         var t = new Texture2D(GraphicsDevice, 1, 1);
+           //         t.SetData(new[] { Color.Red });
+           //         foreach (Rectangle boundingBox in _mapManager.currentMap.Blocks.Select(x => x.BoundingBox).Concat(new List<Rectangle>() { hero.BoundingBox }))
+           //         {
+           //             int bw = 2; // Border width
+
+           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Left
+           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Right, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Right
+           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, boundingBox.Width, bw), Color.Black); // Top
+           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Bottom, boundingBox.Width, bw), Color.Black); // Bottom
+           //         }
+           //     }
 
             _spriteBatch.End();
 

@@ -24,9 +24,12 @@ namespace GameDevelopment.Map
             return uniqueInstance; 
         }
 
-        public void addMap(int[,] mapArray, Texture2D mapTexture)
+        public void addMap(int[,] mapArray, Texture2D blockTexture, Texture2D trapTexture)
         {
-            maps.Add(new Map(mapArray, mapTexture));
+            var map = new Map(mapArray.GetLength(1), mapArray.GetLength(0), blockTexture, trapTexture);
+            currentMap = map;
+            map.LoadMap(mapArray);
+            maps.Add(map);
         }
 
         public void selectMap(int index)

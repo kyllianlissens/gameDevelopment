@@ -29,7 +29,7 @@ namespace GameDevelopment.GameObject
             if (movable.Position.Y == (BoundsY - HeroSizeY))
                 return true;
 
-            foreach (var block in MapManager.getInstance().currentMap.blocks)
+            foreach (var block in MapManager.getInstance().currentMap.Blocks)
             {
                 Rectangle boundingBox = block.BoundingBox;
                 boundingBox.Inflate(0, 1);
@@ -86,7 +86,7 @@ namespace GameDevelopment.GameObject
                 movable.Position = new Vector2(Math.Clamp(movable.Position.X, 0, BoundsX - HeroSizeX), Math.Clamp(movable.Position.Y, 0, BoundsY - HeroSizeY));
             }
 
-            foreach (var block in MapManager.getInstance().currentMap.blocks)
+            foreach (var block in MapManager.getInstance().currentMap.Blocks)
             {
                 if (movable.BoundingBox.Intersects(block.BoundingBox))
                 {
