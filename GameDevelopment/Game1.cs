@@ -23,7 +23,7 @@ namespace GameDevelopment
         private Texture2D _heroTexture;
         private Texture2D _blockTexture;
         private Texture2D _spikeTexture;
-
+        private Texture2D _playButtonTexture;
         private Texture2D _backgroundTexture;
         private SpriteFont _font;
 
@@ -53,7 +53,10 @@ namespace GameDevelopment
             background = new Background(_backgroundTexture);
             background.Initialize();
 
+
+            Menu.Initialise(_playButtonTexture);
             Level1.Initialize(_blockTexture, _spikeTexture, hero);
+
 
         }
 
@@ -66,6 +69,7 @@ namespace GameDevelopment
             _blockTexture = Content.Load<Texture2D>("block");
             _spikeTexture = Content.Load<Texture2D>("spiketrap");
             _backgroundTexture = Content.Load<Texture2D>("background");
+            _playButtonTexture = Content.Load<Texture2D>("play");
             _font = Content.Load<SpriteFont>("scoreFont");
         }
 

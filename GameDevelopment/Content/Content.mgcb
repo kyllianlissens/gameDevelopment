@@ -49,6 +49,18 @@
 /processorParam:TextureFormat=Color
 /build:Plague_Doctor_Sprite_Sheet.png;doctor.png
 
+#begin play.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:play.png
+
 #begin scoreFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

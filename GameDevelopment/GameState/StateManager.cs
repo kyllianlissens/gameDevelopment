@@ -25,7 +25,7 @@ namespace GameDevelopment.GameState
 
         private StateManager()
         {
-            gameState = GameState.Level1;
+            gameState = GameState.Menu;
         }
 
         public static StateManager getInstance()
@@ -39,6 +39,7 @@ namespace GameDevelopment.GameState
             switch (gameState)
             {
                 case GameState.Menu:
+                    Menu.Draw(spriteBatch);
                     break;
                 case GameState.Dead: break;
                 case GameState.Level1:
@@ -69,6 +70,7 @@ namespace GameDevelopment.GameState
             switch (gameState)
             {
                 case GameState.Menu:
+                    Menu.Update();
                     break;
                 case GameState.Dead: break;
                 case GameState.Level1:
