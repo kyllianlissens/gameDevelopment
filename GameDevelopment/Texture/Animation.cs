@@ -46,6 +46,8 @@ namespace GameDevelopment.Texture
                 }
             }
 
+            CurrentFrame = frames[0];
+
         }
 
         public void AddFramesFromTextureProperties(int widthOfFrame, int heightOfFrame, int rowOfSprites, int numberOfSprites, int startSprite = 1, int endSprite = int.MaxValue - 1)
@@ -54,6 +56,8 @@ namespace GameDevelopment.Texture
             {
                 frames.Add(new AnimationFrame(new Rectangle(0 + i * widthOfFrame, (rowOfSprites-1)*heightOfFrame, widthOfFrame, heightOfFrame)));
             }
+
+            CurrentFrame = frames[0];
         }
 
         private double secondCounter = 0;

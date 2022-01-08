@@ -32,7 +32,6 @@ namespace GameDevelopment.GameState
             map = new Map(tileMap.GetLength(1), tileMap.GetLength(0), spawnPosition, _blockTexture, _spikeTexture, _ghost1Texture, _ghost2Texture);
             map.LoadMap(tileMap);
             hero = _hero;
-            hero.ResetPosition();
         }
 
         public static void Draw (SpriteBatch spriteBatch)
