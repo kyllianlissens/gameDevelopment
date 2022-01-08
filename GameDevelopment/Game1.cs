@@ -23,6 +23,8 @@ namespace GameDevelopment
         private Texture2D _heroTexture;
         private Texture2D _blockTexture;
         private Texture2D _spikeTexture;
+        private Texture2D _ghost1Texture;
+        private Texture2D _ghost2Texture;
 
         private Texture2D _backgroundTexture;
         private SpriteFont _font;
@@ -53,7 +55,7 @@ namespace GameDevelopment
             background = new Background(_backgroundTexture);
             background.Initialize();
 
-            Level1.Initialize(_blockTexture, _spikeTexture, hero);
+            Level1.Initialize(_blockTexture, _spikeTexture, _ghost1Texture, _ghost2Texture, hero);
 
         }
 
@@ -65,6 +67,8 @@ namespace GameDevelopment
             _heroTexture = Content.Load<Texture2D>("doctor");
             _blockTexture = Content.Load<Texture2D>("block");
             _spikeTexture = Content.Load<Texture2D>("spiketrap");
+            _ghost1Texture = Content.Load<Texture2D>("ghostchloe");
+            _ghost2Texture = Content.Load<Texture2D>("ghostwilly");
             _backgroundTexture = Content.Load<Texture2D>("background");
             _font = Content.Load<SpriteFont>("scoreFont");
         }
@@ -91,25 +95,30 @@ namespace GameDevelopment
             background.Draw(_spriteBatch);
 
             StateManager.getInstance().Draw(_spriteBatch);
-           
+
 
             //Draw collisions for debugging
 
-           //bool debugCollisions = true;
-           // if (debugCollisions)
-           //     {
-           //         var t = new Texture2D(GraphicsDevice, 1, 1);
-           //         t.SetData(new[] { Color.Red });
-           //         foreach (Rectangle boundingBox in _mapManager.currentMap.Blocks.Select(x => x.BoundingBox).Concat(new List<Rectangle>() { hero.BoundingBox }))
-           //         {
-           //             int bw = 2; // Border width
+            bool debugCollisions = true;
+            if (debugCollisions)
+            {
+                var t = new Texture2D(GraphicsDevice, 1, 1);
+                t.SetData(new[] { Color.Red });
+                List<Rectangle> boundingBoxes = new List<Rectangle>();
+                boundingBoxes.AddRange(StateManager.getInstance().GetBlocks().Select(x => x.BoundingBox));
+                boundingBoxes.AddRange(StateManager.getInstance().GetTraps().Select(x => x.BoundingBox));
+                boundingBoxes.AddRange(StateManager.getInstance().GetEnemies().Select(x => x.BoundingBox));
+                boundingBoxes.Add(hero.BoundingBox);
+                foreach (Rectangle boundingBox in boundingBoxes)
+                {
+                    int bw = 2; // Border width
 
-           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Left
-           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Right, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Right
-           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, boundingBox.Width, bw), Color.Black); // Top
-           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Bottom, boundingBox.Width, bw), Color.Black); // Bottom
-           //         }
-           //     }
+                    _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Left
+                    _spriteBatch.Draw(t, new Rectangle(boundingBox.Right, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Right
+                    _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, boundingBox.Width, bw), Color.Black); // Top
+                    _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Bottom, boundingBox.Width, bw), Color.Black); // Bottom
+                }
+            }
 
             _spriteBatch.End();
 

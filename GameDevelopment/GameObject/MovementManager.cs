@@ -10,23 +10,27 @@ namespace GameDevelopment.GameObject
     {
         private int BoundsX;
         private int BoundsY;
-        private int HeroSizeX;
-        private int HeroSizeY;
+        private int EntitySizeX;
+        private int EntitySizeY;
 
-        private static float JumpHeight = 5;
-        private static float Friction = 0.99f;
-        private static float Gravity = 0.10f;
-        private static float BaseSpeed = 4f;
-        public MovementManager(int boundsX, int boundsY, int sizeX, int sizeY)
+        private float JumpHeight = 5;
+        private float Friction = 0.99f;
+        private float Gravity = 0.10f;
+        private float BaseSpeed = 4f;
+        public MovementManager(int boundsX, int boundsY, int sizeX, int sizeY, float jumpHeight = 10, float friction = 1f, float gravity = 0.80f, float baseSpeed = 4f)
         {
             BoundsX = boundsX;
             BoundsY = boundsY;
-            HeroSizeX = sizeX;
-            HeroSizeY = sizeY;
+            EntitySizeX = sizeX;
+            EntitySizeY = sizeY;
+            JumpHeight = jumpHeight;
+            Friction = friction;
+            Gravity = gravity;
+            BaseSpeed = baseSpeed;
         }
         private bool IsGrounded(IMovable movable)
         {
-            if (movable.Position.Y == (BoundsY - HeroSizeY))
+            if (movable.Position.Y == (BoundsY - EntitySizeY))
                 return true;
 
             foreach (var block in StateManager.getInstance().GetBlocks())
@@ -77,13 +81,13 @@ namespace GameDevelopment.GameObject
         }
         public void ClampBounds(IMovable movable)
         {
-            if (movable.Position.X < 0 || movable.Position.Y < 0 || movable.Position.X > (BoundsX - HeroSizeX) || movable.Position.Y > (BoundsY - HeroSizeY))
+            if (movable.Position.X < 0 || movable.Position.Y < 0 || movable.Position.X > (BoundsX - EntitySizeX) || movable.Position.Y > (BoundsY - EntitySizeY))
             {
                 if (movable.Position.X < 0) movable.Speed = new Vector2(Math.Min(0, movable.Speed.X), movable.Speed.Y);
-                else if (movable.Position.X > (BoundsX - HeroSizeX)) movable.Speed = new Vector2(Math.Min(0, movable.Speed.X), movable.Speed.Y);
+                else if (movable.Position.X > (BoundsX - EntitySizeX)) movable.Speed = new Vector2(Math.Min(0, movable.Speed.X), movable.Speed.Y);
                 if (movable.Position.Y < 0) movable.Speed = new Vector2(movable.Speed.X, Math.Min(0, movable.Speed.Y));
-                else if (movable.Position.Y > (BoundsY - HeroSizeY)) movable.Speed = new Vector2(movable.Speed.X, Math.Min(0, movable.Speed.Y));
-                movable.Position = new Vector2(Math.Clamp(movable.Position.X, 0, BoundsX - HeroSizeX), Math.Clamp(movable.Position.Y, 0, BoundsY - HeroSizeY));
+                else if (movable.Position.Y > (BoundsY - EntitySizeY)) movable.Speed = new Vector2(movable.Speed.X, Math.Min(0, movable.Speed.Y));
+                movable.Position = new Vector2(Math.Clamp(movable.Position.X, 0, BoundsX - EntitySizeX), Math.Clamp(movable.Position.Y, 0, BoundsY - EntitySizeY));
             }
 
             foreach (var block in StateManager.getInstance().GetBlocks())
@@ -109,14 +113,17 @@ namespace GameDevelopment.GameObject
                     {
                         // Kill vertical momentum on touching the side of a platform using Math.Max(0, movable.Speed.Y)
                         // This is the same behavior as Super Mario Bros
+                        float newSpeedY = movable.Speed.Y;
+                        if (Configuration.stopVerticalMomentum)
+                            newSpeedY = Math.Max(0, newSpeedY);
                         if (movable.BoundingBox.Left < block.BoundingBox.Right && movable.BoundingBox.Left > block.BoundingBox.Left) // Object is right
                         {
-                            movable.Speed = new Vector2(Math.Min(0, movable.Speed.X), Math.Max(0, movable.Speed.Y));
+                            movable.Speed = new Vector2(Math.Min(0, movable.Speed.X), newSpeedY);
                             movable.Position += new Vector2(block.BoundingBox.Right - movable.BoundingBox.Left, 0);
                         }
                         else if (movable.BoundingBox.Right > block.BoundingBox.Left && movable.BoundingBox.Right < block.BoundingBox.Right) // Object is left
                         {
-                            movable.Speed = new Vector2(Math.Min(0, movable.Speed.X), Math.Max(0, movable.Speed.Y));
+                            movable.Speed = new Vector2(Math.Min(0, movable.Speed.X), newSpeedY);
                             movable.Position += new Vector2(block.BoundingBox.Left - movable.BoundingBox.Right, 0);
                         }
                     }

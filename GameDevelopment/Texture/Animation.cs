@@ -9,11 +9,15 @@ namespace GameDevelopment.Texture
     {
         public AnimationFrame CurrentFrame { get; set; }
         private List<AnimationFrame> frames;
+        private int fps;
+        private bool repeat;
         private int counter;
 
-        public Animation()
+        public Animation(int _fps = 15, bool _repeat = true)
         {
             frames = new List<AnimationFrame>();
+            fps = _fps;
+            repeat = _repeat;
         }
 
         public void AddFrame(AnimationFrame frame)
@@ -55,18 +59,22 @@ namespace GameDevelopment.Texture
         private double secondCounter = 0;
         public void Update(GameTime gameTime)
         {
+            if (!repeat)
+            {
+                if (counter + 1 == frames.Count)
+                {
+                    return;
+                }
+            }
             CurrentFrame = frames[counter];
 
             secondCounter += gameTime.ElapsedGameTime.TotalSeconds;
-            int fps = 15;
 
             if (secondCounter >= 1d / fps)
             {
-                counter++;
+                counter = (counter + 1) % frames.Count;
                 secondCounter = 0;
             }
-
-            counter = (counter + 1) % frames.Count;
         }
 
     }

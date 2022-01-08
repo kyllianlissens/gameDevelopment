@@ -1,4 +1,5 @@
-﻿using GameDevelopment.Input;
+﻿using GameDevelopment.GameState;
+using GameDevelopment.Input;
 using GameDevelopment.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,11 +37,9 @@ namespace GameDevelopment.GameObject
             position = new Vector2(300, 300);
             speed = new Vector2(0, 0);
 
-            animations[IMovable.MovableState.Idle] = new Animation();
+            animations[IMovable.MovableState.Idle] = new Animation(_fps: 8);
             animations[IMovable.MovableState.Idle].AddFramesFromTextureProperties(32, 32, 1, 12);
-            animations[IMovable.MovableState.Running] = new Animation();
-            animations[IMovable.MovableState.Running].AddFramesFromTextureProperties(32, 32, 2, 8);
-            animations[IMovable.MovableState.Walking] = new Animation();
+            animations[IMovable.MovableState.Walking] = new Animation(_fps: 15);
             animations[IMovable.MovableState.Walking].AddFramesFromTextureProperties(32, 32, 2, 8);
             animations[IMovable.MovableState.Falling] = new Animation();
             animations[IMovable.MovableState.Falling].AddFramesFromTextureProperties(32, 32, 5, 4, 2, 2);
@@ -63,62 +62,70 @@ namespace GameDevelopment.GameObject
             else boundingBoxOffsetWidth += 2f;
             float boundingBoxOffsetHeight = (32f - BoundingBox.Height/scale);
             spriteBatch.Draw(texture, position, animations[State].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(boundingBoxOffsetWidth, boundingBoxOffsetHeight), scale, lastDirection, 0);
+        }
 
+        public void ResetPosition()
+        {
+            State = IMovable.MovableState.Idle;
 
+            var spawnPosition = StateManager.getInstance().GetMap().SpawnPosition;
+            position = spawnPosition;
+            speed = new Vector2(0, 0);
         }
 
         public void Update(GameTime gameTime)
         {
             Move();
             animations[State].Update(gameTime);
+
+
+            foreach (var trap in StateManager.getInstance().GetTraps())
+            {
+                if (trap.CheckCollision(BoundingBox))
+                {
+                    // reduce health
+                    ResetPosition();
+                    return;
+                }
+            }
+
+            foreach (var enemy in StateManager.getInstance().GetEnemies())
+            {
+                if (enemy.State == IMovable.MovableState.Dying)
+                    continue;
+                if (enemy.CheckCollision(BoundingBox))
+                {
+                    Rectangle collision = Rectangle.Intersect(this.BoundingBox, enemy.BoundingBox);
+
+                    if (collision.Width > collision.Height && this.BoundingBox.Bottom > enemy.BoundingBox.Top && this.BoundingBox.Bottom < enemy.BoundingBox.Bottom)
+                    {
+                        enemy.Destroy();
+                    }
+                    else
+                    {
+                        // Reduce health
+                        ResetPosition();
+                        return;
+                    }
+                }
+            }
         }
 
         private void Move()
         {
-            Vector2 direction = ((IMovable)this).InputReader.ReadInput();
+            Vector2 direction = this.InputReader.ReadInput();
 
             if (direction.X == 1)
                 lastDirection = SpriteEffects.None;
             else if (direction.X == -1)
                 lastDirection = SpriteEffects.FlipHorizontally;
 
-            //TODO: Collision detection
-            /*
-             * public static void CheckCollision(CharacterController character, CollisionObject collisionObject)
-                {
-                    if (character.collider.Intersects(collisionObject.collider))
-                    {
-                        if (character.collider.Bottom <= collisionObject.collider.Top+10)
-                        {
-                            character.isGrounded = true;
-                            character.y = collisionObject.collider.Top - character.collider.Height;
-                        }
-                        else if (character.collider.Right > collisionObject.collider.Left & character.collider.Left < collisionObject.collider.Left)
-                        {
-                            character.x = collisionObject.collider.Left - character.collider.Width-character.xCollisionOffset;
-                        }
-                        else if (character.collider.Left < collisionObject.collider.Right & character.collider.Right > collisionObject.collider.Right)
-                        {
-                            character.x = collisionObject.collider.Right-character.xCollisionOffset;
-                        }
-                    }
-             }
-          
-             */
-            //foreach (var block in MapManager.getInstance().currentMap.blocks)
-            //{
-            //    if (texture.Bounds.Intersects(block.BoundingBox))
-            //    {
-            //        direction.Y = block.BoundingBox.Top - texture.Bounds.Height;
-            //    }
-            //}
-
             movementManager.Update(this, direction);
         }
 
+        IInputReader InputReader { get => inputReader; set => inputReader = value; }
         Vector2 IGameObject.Position { get => position; set => position = value; }
         Vector2 IMovable.Speed { get => speed; set => speed = value; }
-        IInputReader IMovable.InputReader { get => inputReader; set => inputReader = value; }
         public IMovable.MovableState State { get => state; set => state = value; }
     }
 }

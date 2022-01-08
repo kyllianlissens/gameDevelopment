@@ -10,5 +10,7 @@ namespace GameDevelopment
         static public int viewportWidth = 800;
         static public int defaultTileSize = 32;
 
+        static public bool stopVerticalMomentum = false;
+
     }
 }
