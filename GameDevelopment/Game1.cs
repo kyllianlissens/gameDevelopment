@@ -1,6 +1,6 @@
 ﻿using GameDevelopment.GameObject;
+using GameDevelopment.GameState;
 using GameDevelopment.Input;
-using GameDevelopment.Map;
 using GameDevelopment.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,43 +13,17 @@ namespace GameDevelopment
 
 
 
-    public abstract class GameState
-    {
-        protected abstract void Initialize();
-        protected abstract void Update(GameTime gameTime);
-        protected abstract void Draw(GameTime gameTime);
-
-    }
-
-    public class MenuState : GameState
-    {
-        protected override void Draw(GameTime gameTime)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void Initialize()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void Update(GameTime gameTime)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
-
+ 
 
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private RenderTarget2D _scene;
         private SpriteBatch _spriteBatch;
-        private MapManager _mapManager;
         private Texture2D _heroTexture;
         private Texture2D _blockTexture;
         private Texture2D _spikeTexture;
+
         private Texture2D _backgroundTexture;
         private SpriteFont _font;
 
@@ -78,22 +52,8 @@ namespace GameDevelopment
             hero = new Hero(_heroTexture, new KeyboardReader());
             background = new Background(_backgroundTexture);
             background.Initialize();
-            _mapManager = MapManager.getInstance();
 
-            _mapManager.addMap(new int[,]
-            {
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 0,1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }
-            }, _blockTexture, _spikeTexture);
-
-
-           
+            Level1.Initialize(_blockTexture, _spikeTexture, hero);
 
         }
 
@@ -104,7 +64,7 @@ namespace GameDevelopment
 
             _heroTexture = Content.Load<Texture2D>("doctor");
             _blockTexture = Content.Load<Texture2D>("block");
-            _spikeTexture = Content.Load<Texture2D>("spike");
+            _spikeTexture = Content.Load<Texture2D>("spiketrap");
             _backgroundTexture = Content.Load<Texture2D>("background");
             _font = Content.Load<SpriteFont>("scoreFont");
         }
@@ -114,8 +74,8 @@ namespace GameDevelopment
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            hero.Update(gameTime);
 
+            StateManager.getInstance().Update(gameTime);
             base.Update(gameTime);
 
             score++;
@@ -129,10 +89,9 @@ namespace GameDevelopment
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             
             background.Draw(_spriteBatch);
-            _spriteBatch.DrawString(_font, "Score: " + score, new Vector2(0, 0), Color.Red);
 
-            _mapManager.currentMap.Draw(_spriteBatch);
-            hero.Draw(_spriteBatch);
+            StateManager.getInstance().Draw(_spriteBatch);
+           
 
             //Draw collisions for debugging
 

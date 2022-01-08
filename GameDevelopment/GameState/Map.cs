@@ -1,10 +1,11 @@
 ﻿using GameDevelopment.GameObject;
+using GameDevelopment.MapEntities;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameDevelopment.Map
+namespace GameDevelopment.GameState
 {
     internal class Map
     {

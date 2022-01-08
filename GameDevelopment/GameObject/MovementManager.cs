@@ -1,4 +1,4 @@
-﻿using GameDevelopment.Map;
+﻿using GameDevelopment.GameState;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace GameDevelopment.GameObject
             if (movable.Position.Y == (BoundsY - HeroSizeY))
                 return true;
 
-            foreach (var block in MapManager.getInstance().currentMap.Blocks)
+            foreach (var block in StateManager.getInstance().GetBlocks())
             {
                 Rectangle boundingBox = block.BoundingBox;
                 boundingBox.Inflate(0, 1);
@@ -86,7 +86,7 @@ namespace GameDevelopment.GameObject
                 movable.Position = new Vector2(Math.Clamp(movable.Position.X, 0, BoundsX - HeroSizeX), Math.Clamp(movable.Position.Y, 0, BoundsY - HeroSizeY));
             }
 
-            foreach (var block in MapManager.getInstance().currentMap.Blocks)
+            foreach (var block in StateManager.getInstance().GetBlocks())
             {
                 if (movable.BoundingBox.Intersects(block.BoundingBox))
                 {

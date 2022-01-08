@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameDevelopment.Map
+namespace GameDevelopment.MapEntities
 {
     class Block : IGameObject, ICollidable
     {
@@ -18,9 +18,8 @@ namespace GameDevelopment.Map
         {
             
             //TODO: Recode to replace 8 with current mapSize 
-            BoundingBox = new Rectangle(x * (Configuration.viewportWidth / MapManager.getInstance().currentMap.MapWidth), (Configuration.viewportHeight - (Configuration.defaultTileSize * y)), Configuration.viewportWidth / MapManager.getInstance().currentMap.MapWidth, texture.Bounds.Height);
+            BoundingBox = new Rectangle(x * (Configuration.viewportWidth / 23), (Configuration.viewportHeight - (Configuration.defaultTileSize * y)), Configuration.viewportWidth / 23, texture.Bounds.Height);
 
-            var width = MapManager.getInstance().currentMap.MapHeight;
 
 
             Position = new Vector2(x, y);

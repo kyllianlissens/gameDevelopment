@@ -1,5 +1,4 @@
 ﻿using GameDevelopment.Input;
-using GameDevelopment.Map;
 using GameDevelopment.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -64,6 +63,8 @@ namespace GameDevelopment.GameObject
             else boundingBoxOffsetWidth += 2f;
             float boundingBoxOffsetHeight = (32f - BoundingBox.Height/scale);
             spriteBatch.Draw(texture, position, animations[State].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(boundingBoxOffsetWidth, boundingBoxOffsetHeight), scale, lastDirection, 0);
+
+
         }
 
         public void Update(GameTime gameTime)

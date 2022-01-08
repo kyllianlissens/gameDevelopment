@@ -1,10 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameDevelopment.GameObject;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameDevelopment.GameObject
+namespace GameDevelopment.MapEntities
 {
     internal class Trap :  ICollidable, IGameObject
     {
@@ -16,7 +17,7 @@ namespace GameDevelopment.GameObject
 
         public Trap(int x, int y, Texture2D texture)
         {
-            BoundingBox = new Rectangle(x * (Configuration.viewportWidth / 20), (Configuration.viewportHeight - (Configuration.defaultTileSize * y)), Configuration.viewportWidth / 20, texture.Bounds.Height);
+            BoundingBox = new Rectangle(x * (Configuration.viewportWidth / 23), (Configuration.viewportHeight - (Configuration.defaultTileSize * y)), Configuration.viewportWidth / 23, texture.Bounds.Height);
             Texture = texture;
             Position = new Vector2(x, y);
         }
