@@ -17,7 +17,8 @@ namespace GameDevelopment.MapEntities
 
         public Trap(int x, int y, Texture2D texture)
         {
-            BoundingBox = new Rectangle(x * (Configuration.viewportWidth / 23), (Configuration.viewportHeight - (Configuration.defaultTileSize * y)), Configuration.viewportWidth / 23, texture.Bounds.Height);
+            int trapHeight = 14;
+            BoundingBox = new Rectangle(x * (Configuration.viewportWidth / 23), (Configuration.viewportHeight - (Configuration.defaultTileSize * y)) + (texture.Height - trapHeight), Configuration.viewportWidth / 23, trapHeight);
             Texture = texture;
             Position = new Vector2(x, y);
         }

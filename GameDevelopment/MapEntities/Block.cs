@@ -16,15 +16,11 @@ namespace GameDevelopment.MapEntities
 
         public Block(int x, int y, Texture2D texture)
         {
-            
             //TODO: Recode to replace 8 with current mapSize 
             BoundingBox = new Rectangle(x * (Configuration.viewportWidth / 23), (Configuration.viewportHeight - (Configuration.defaultTileSize * y)), Configuration.viewportWidth / 23, texture.Bounds.Height);
-
-
-
+            
             Position = new Vector2(x, y);
             Texture = texture;
-
         }
 
         public void Draw(SpriteBatch spriteBatch)

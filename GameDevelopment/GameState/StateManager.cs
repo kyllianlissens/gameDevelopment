@@ -50,6 +50,19 @@ namespace GameDevelopment.GameState
             }
         }
 
+        public Map GetMap()
+        {
+            // Or only a GetSpawnPosition()?
+            switch (gameState)
+            {
+                case GameState.Level1:
+                    return Level1.map;
+                case GameState.Level2:
+                    return null;
+                default:
+                    return null;
+            }
+        }
 
         public List<Block> GetBlocks()
         {
@@ -62,6 +75,33 @@ namespace GameDevelopment.GameState
                     return new List<Block>();
                 default:
                     return new List<Block>();
+            }
+        }
+
+        public List<Trap> GetTraps()
+        {
+            switch (gameState)
+            {
+       
+                case GameState.Level1:
+                    return Level1.map.Traps;
+                case GameState.Level2: 
+                    return new List<Trap>();
+                default:
+                    return new List<Trap>();
+            }
+        }
+        public List<Enemy> GetEnemies()
+        {
+            switch (gameState)
+            {
+       
+                case GameState.Level1:
+                    return Level1.map.Enemies;
+                case GameState.Level2: 
+                    return new List<Enemy>();
+                default:
+                    return new List<Enemy>();
             }
         }
 

@@ -13,23 +13,26 @@ namespace GameDevelopment.GameState
         public static Map map;
         private static Hero hero;
 
-        public static void Initialize (Texture2D _blockTexture, Texture2D _spikeTexture, Hero _hero)
+        public static void Initialize (Texture2D _blockTexture, Texture2D _spikeTexture, Texture2D _ghost1Texture, Texture2D _ghost2Texture, Hero _hero)
         {
             var tileMap = new int[,]
             {
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 0,1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                { 0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,0,0,0,0,2,2,1,2,2,1,2,2,1,0,0,3,1,0,0,0 },
+                { 0,0,0,0,0,0,2,1,1,1,0,1,1,0,1,1,0,1,1,1,0,0,0,0 },
+                { 0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,1,1 },
+                { 1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,1,1,1,0,0,0,0,0 },
+                { 0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                { 0,0,1,2,2,1,0,0,0,0,0,0,2,2,1,1,0,0,0,1,0,3,0,1 },
                 { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }
             };
 
-            map = new Map(tileMap.GetLength(1), tileMap.GetLength(0), _blockTexture, _spikeTexture);
+            Vector2 spawnPosition = new Vector2(300, 380);
+
+            map = new Map(tileMap.GetLength(1), tileMap.GetLength(0), spawnPosition, _blockTexture, _spikeTexture, _ghost1Texture, _ghost2Texture);
             map.LoadMap(tileMap);
             hero = _hero;
+            hero.ResetPosition();
         }
 
         public static void Draw (SpriteBatch spriteBatch)
@@ -40,6 +43,7 @@ namespace GameDevelopment.GameState
 
         public static void Update(GameTime gameTime)
         {
+            map.Update(gameTime);
             hero.Update(gameTime);
         }
 
