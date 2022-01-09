@@ -8,6 +8,5 @@ namespace GameDevelopment.Input
     public interface IInputReader
     {
         Vector2 ReadInput();
-
     }
 }

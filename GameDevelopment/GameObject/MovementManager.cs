@@ -65,11 +65,11 @@ namespace GameDevelopment.GameObject
 
             UpdateState(movable, direction);
         }
-        public void Accelerate(IMovable movable, float accelX, float accelY)
+        private void Accelerate(IMovable movable, float accelX, float accelY)
         {
             movable.Speed = new Vector2(movable.Speed.X + accelX, movable.Speed.Y + accelY);
         }
-        public void Move(IMovable movable, float deltaX, float deltaY)
+        private void Move(IMovable movable, float deltaX, float deltaY)
         {
             movable.Position = new Vector2(movable.Position.X + deltaX, movable.Position.Y + deltaY);
 
@@ -79,7 +79,7 @@ namespace GameDevelopment.GameObject
                 movable.Speed = new Vector2(0, 0);
             }
         }
-        public void ClampBounds(IMovable movable)
+        private void ClampBounds(IMovable movable)
         {
             if (movable.Position.X < 0 || movable.Position.Y < 0 || movable.Position.X > (BoundsX - EntitySizeX) || movable.Position.Y > (BoundsY - EntitySizeY))
             {
@@ -130,7 +130,7 @@ namespace GameDevelopment.GameObject
                 }
             }
         }
-        public void UpdateState(IMovable movable, Vector2 direction)
+        private void UpdateState(IMovable movable, Vector2 direction)
         {
             if (movable.Speed == Vector2.Zero)
                 if (direction.Y == 1)
