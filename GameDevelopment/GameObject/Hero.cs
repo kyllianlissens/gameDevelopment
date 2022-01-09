@@ -16,7 +16,8 @@ namespace GameDevelopment.GameObject
         private int scale;
         private MovementManager movementManager;
         private Dictionary<IMovable.MovableState, Animation> animations;
-
+        public int health;
+        public int score;
         private Vector2 position;
         private Vector2 speed;
         private SpriteEffects lastDirection;
@@ -27,6 +28,8 @@ namespace GameDevelopment.GameObject
         public Rectangle BoundingBox => new Rectangle((int)position.X, (int)position.Y, (int)(24 * scale), (int)(30 * scale));
         public Hero(Texture2D texture, IInputReader inputReader)
         {
+
+            health = 3;
             this.texture = texture;
             scale = 2;
             this.inputReader = inputReader;
@@ -62,6 +65,7 @@ namespace GameDevelopment.GameObject
             else boundingBoxOffsetWidth += 2f;
             float boundingBoxOffsetHeight = (32f - BoundingBox.Height/scale);
             spriteBatch.Draw(texture, position, animations[State].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(boundingBoxOffsetWidth, boundingBoxOffsetHeight), scale, lastDirection, 0);
+
         }
 
         public void ResetPosition()
@@ -73,17 +77,27 @@ namespace GameDevelopment.GameObject
             speed = new Vector2(0, 0);
         }
 
+        public void ResetHero()
+        {
+            health = 3;
+            score = 0;
+        }
+
+
         public void Update(GameTime gameTime)
         {
             Move();
             animations[State].Update(gameTime);
 
+            //TODO: Add coins & collision for them
+            //TODO: Detect when dead & change state to Dead
 
             foreach (var trap in StateManager.getInstance().GetTraps())
             {
                 if (trap.CheckCollision(BoundingBox))
                 {
                     // reduce health
+                    --health;
                     ResetPosition();
                     return;
                 }
@@ -104,6 +118,7 @@ namespace GameDevelopment.GameObject
                     else
                     {
                         // Reduce health
+                        --health;
                         ResetPosition();
                         return;
                     }

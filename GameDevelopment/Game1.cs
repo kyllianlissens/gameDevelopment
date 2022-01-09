@@ -26,12 +26,13 @@ namespace GameDevelopment
         private Texture2D _ghost1Texture;
         private Texture2D _ghost2Texture;
         private Texture2D _playButtonTexture;
+        private Texture2D _menuButtonTexture;
+        private Texture2D _gameOverTexture;
         private Texture2D _backgroundTexture;
         private SpriteFont _font;
 
         private Hero hero;
         private Background background;
-        private int score = 0;
 
         public Game1()
         {
@@ -58,7 +59,7 @@ namespace GameDevelopment
 
             Menu.Initialise(_playButtonTexture);
             Level1.Initialize(_blockTexture, _spikeTexture, _ghost1Texture, _ghost2Texture, hero);
-
+            Dead.Initialise(_menuButtonTexture);
 
         }
 
@@ -72,6 +73,7 @@ namespace GameDevelopment
             _spikeTexture = Content.Load<Texture2D>("spiketrap");
             _backgroundTexture = Content.Load<Texture2D>("background");
             _playButtonTexture = Content.Load<Texture2D>("play");
+            _menuButtonTexture = Content.Load<Texture2D>("play");
             _ghost1Texture = Content.Load<Texture2D>("ghostchloe");
             _ghost2Texture = Content.Load<Texture2D>("ghostwilly");
             _font = Content.Load<SpriteFont>("scoreFont");
@@ -86,7 +88,6 @@ namespace GameDevelopment
             StateManager.getInstance().Update(gameTime);
             base.Update(gameTime);
 
-            score++;
         }
 
         protected override void Draw(GameTime gameTime)
@@ -99,25 +100,25 @@ namespace GameDevelopment
             background.Draw(_spriteBatch);
 
             StateManager.getInstance().Draw(_spriteBatch);
-           
+            _spriteBatch.DrawString(_font, "Health: " + hero.health, new Vector2(0, 0), Color.Red);
 
             //Draw collisions for debugging
 
-           //bool debugCollisions = true;
-           // if (debugCollisions)
-           //     {
-           //         var t = new Texture2D(GraphicsDevice, 1, 1);
-           //         t.SetData(new[] { Color.Red });
-           //         foreach (Rectangle boundingBox in _mapManager.currentMap.Blocks.Select(x => x.BoundingBox).Concat(new List<Rectangle>() { hero.BoundingBox }))
-           //         {
-           //             int bw = 2; // Border width
+            //bool debugCollisions = true;
+            // if (debugCollisions)
+            //     {
+            //         var t = new Texture2D(GraphicsDevice, 1, 1);
+            //         t.SetData(new[] { Color.Red });
+            //         foreach (Rectangle boundingBox in _mapManager.currentMap.Blocks.Select(x => x.BoundingBox).Concat(new List<Rectangle>() { hero.BoundingBox }))
+            //         {
+            //             int bw = 2; // Border width
 
-           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Left
-           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Right, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Right
-           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, boundingBox.Width, bw), Color.Black); // Top
-           //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Bottom, boundingBox.Width, bw), Color.Black); // Bottom
-           //         }
-           //     }
+            //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Left
+            //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Right, boundingBox.Top, bw, boundingBox.Height), Color.Black); // Right
+            //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Top, boundingBox.Width, bw), Color.Black); // Top
+            //             _spriteBatch.Draw(t, new Rectangle(boundingBox.Left, boundingBox.Bottom, boundingBox.Width, bw), Color.Black); // Bottom
+            //         }
+            //     }
 
             _spriteBatch.End();
 
