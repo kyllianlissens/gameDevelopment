@@ -9,14 +9,13 @@ namespace GameDevelopment.GameState
 {
     internal class StateManager
     {
-
-
         public enum GameState
         {
             Menu,
             Dead,
             Level1,
-            Level2
+            Level2,
+            Victory
         }
 
         private static StateManager uniqueInstance;
@@ -34,33 +33,55 @@ namespace GameDevelopment.GameState
             return uniqueInstance;
         }
 
+        public void SetState(GameState newState)
+        {
+            gameState = newState;
+            switch (gameState)
+            {
+                case GameState.Dead:
+                case GameState.Victory:
+                    break;
+                case GameState.Menu:
+                case GameState.Level1:
+                case GameState.Level2:
+                    GetLevel().PrepareLevel();
+                    break;
+            }
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             switch (gameState)
             {
                 case GameState.Menu:
-                    Menu.Draw(spriteBatch);
+                    Menu.getInstance().Draw(spriteBatch);
                     break;
-                case GameState.Dead: break;
+                case GameState.Dead:
+                    Dead.getInstance().Draw(spriteBatch);
+                    break;
+                case GameState.Victory:
+                    Victory.getInstance().Draw(spriteBatch);
+                    break;
                 case GameState.Level1:
-                    Level1.Draw(spriteBatch);
+                    Level1.getInstance().Draw(spriteBatch);
                     break;
-                case GameState.Level2: break;   
+                case GameState.Level2:
+                    Level2.getInstance().Draw(spriteBatch); 
+                    break;   
                 default: break;
             }
         }
 
-        public Map GetMap()
+        public Vector2 GetSpawnPosition()
         {
-            // Or only a GetSpawnPosition()?
             switch (gameState)
             {
                 case GameState.Level1:
-                    return Level1.map;
+                    return Level1.getInstance().map.SpawnPosition;
                 case GameState.Level2:
-                    return null;
+                    return Level2.getInstance().map.SpawnPosition;
                 default:
-                    return null;
+                    return Vector2.Zero;
             }
         }
 
@@ -70,11 +91,25 @@ namespace GameDevelopment.GameState
             {
        
                 case GameState.Level1:
-                    return Level1.map.Blocks;
-                case GameState.Level2: 
-                    return new List<Block>();
+                    return Level1.getInstance().map.Blocks;
+                case GameState.Level2:
+                    return Level2.getInstance().map.Blocks;
                 default:
                     return new List<Block>();
+            }
+        }
+
+        public List<Coin> GetCoins()
+        {
+            switch (gameState)
+            {
+       
+                case GameState.Level1:
+                    return Level1.getInstance().map.Coins;
+                case GameState.Level2:
+                    return Level2.getInstance().map.Coins;
+                default:
+                    return new List<Coin>();
             }
         }
 
@@ -84,9 +119,9 @@ namespace GameDevelopment.GameState
             {
        
                 case GameState.Level1:
-                    return Level1.map.Traps;
-                case GameState.Level2: 
-                    return new List<Trap>();
+                    return Level1.getInstance().map.Traps;
+                case GameState.Level2:
+                    return Level2.getInstance().map.Traps;
                 default:
                     return new List<Trap>();
             }
@@ -97,11 +132,24 @@ namespace GameDevelopment.GameState
             {
        
                 case GameState.Level1:
-                    return Level1.map.Enemies;
-                case GameState.Level2: 
-                    return new List<Enemy>();
+                    return Level1.getInstance().map.Enemies;
+                case GameState.Level2:
+                    return Level2.getInstance().map.Enemies;
                 default:
                     return new List<Enemy>();
+            }
+        }
+
+        public LevelState GetLevel()
+        {
+            switch (gameState)
+            {
+                case GameState.Level1:
+                    return Level1.getInstance();
+                case GameState.Level2:
+                    return Level2.getInstance();
+                default:
+                    return Level1.getInstance();
             }
         }
 
@@ -110,19 +158,22 @@ namespace GameDevelopment.GameState
             switch (gameState)
             {
                 case GameState.Menu:
-                    Menu.Update();
+                    Menu.getInstance().Update();
                     break;
-                case GameState.Dead: break;
+                case GameState.Dead:
+                    Dead.getInstance().Update();
+                    break;
+                case GameState.Victory:
+                    Victory.getInstance().Update();
+                    break;
                 case GameState.Level1:
-                    Level1.Update(gameTime);
+                    Level1.getInstance().Update(gameTime);
                     break;
-                case GameState.Level2: break;
+                case GameState.Level2:
+                    Level2.getInstance().Update(gameTime);
+                    break;
                 default: break;
             }
-
         }
-
-
-
     }
 }

@@ -6,8 +6,6 @@ using System.Text;
 
 namespace GameDevelopment.GameObject
 {
-
-
     public interface IMovable : IGameObject
     {
         public enum MovableState { Idle, Running, Walking, Falling, Jumping, Dying };

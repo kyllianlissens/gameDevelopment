@@ -9,9 +9,8 @@ using System.Text;
 
 namespace GameDevelopment.MapEntities
 {
-    internal class Enemy : ICollidable, IGameObject, IMovable
+    internal class Enemy : BaseEntity, IMovable
     {
-
         private Vector2 size;
         private Vector2 position;
         private Vector2 speed;
@@ -20,12 +19,11 @@ namespace GameDevelopment.MapEntities
 
         private MovementManager movementManager;
 
-        public Texture2D Texture { get; set; }
         private Dictionary<IMovable.MovableState, Animation> animations;
 
-        public Rectangle BoundingBox => new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+        public override Rectangle BoundingBox => new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
 
-        public Enemy(int x, int y, Texture2D texture)
+        public Enemy(int x, int y, Texture2D texture, float baseSpeed = 0.5f)
         {
             float scale = 2f;
             position = new Vector2(x * (Configuration.viewportWidth / 23), (Configuration.viewportHeight - (Configuration.defaultTileSize * y)) - (int)(texture.Bounds.Height));
@@ -33,7 +31,7 @@ namespace GameDevelopment.MapEntities
 
             Texture = texture;
 
-            movementManager = new MovementManager(800, 480, 32, 64, baseSpeed: 1f);
+            movementManager = new MovementManager(800, 480, 32, 64, baseSpeed: baseSpeed);
 
             animations = new Dictionary<IMovable.MovableState, Animation>();
             State = IMovable.MovableState.Walking;
@@ -66,18 +64,17 @@ namespace GameDevelopment.MapEntities
             State = newState;
         }
 
-        public bool CheckCollision(Rectangle rec)
-        {
-            return BoundingBox.Intersects(rec);
-        }
+        //public override bool CheckCollision(Rectangle rec)
+        //{
+        //    return BoundingBox.Intersects(rec);
+        //}
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, ((IGameObject)this).Position, animations[State].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(0, 0), 2f, lastDirection, 0);
-            //spriteBatch.Draw(Texture, BoundingBox, Color.White);
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             Move();
             animations[State].Update(gameTime);
@@ -109,7 +106,7 @@ namespace GameDevelopment.MapEntities
             movementManager.Update(this, direction);
         }
 
-        Vector2 IGameObject.Position { get => position; set => position = value; }
+        public override Vector2 Position { get => position; set => position = value; }
         Vector2 IMovable.Speed { get => speed; set => speed = value; }
         public IMovable.MovableState State { get => state; set => state = value; }
     }

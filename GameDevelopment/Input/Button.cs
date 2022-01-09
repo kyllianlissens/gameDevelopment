@@ -17,17 +17,14 @@ namespace GameDevelopment.Input
 
         private Vector2 _position;
 
-        private Rectangle _boundingBox { get {
-                return new Rectangle((int)_position.X, (int)_position.Y, _texture.Width, _texture.Height);
-            }
-        }
+        private Rectangle _boundingBox => new Rectangle((int)_position.X, (int)_position.Y, _texture.Width, _texture.Height);
 
         public event EventHandler Click;
 
         public Button(Texture2D texture, Vector2 position)
         {
             _texture = texture; 
-            _position = position;
+            _position = position - new Vector2(_texture.Width/2, _texture.Height/2);
         }
 
         public void Draw(SpriteBatch spriteBatch) {
@@ -46,7 +43,6 @@ namespace GameDevelopment.Input
             if (this._currentMouseState.LeftButton != ButtonState.Released || this._previousMouseState.LeftButton != ButtonState.Pressed) return;
             if (Click == null) return;
             Click((object)this, EventArgs.Empty);
-
 
         }
        

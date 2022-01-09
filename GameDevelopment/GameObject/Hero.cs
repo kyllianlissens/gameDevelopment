@@ -28,7 +28,6 @@ namespace GameDevelopment.GameObject
         public Rectangle BoundingBox => new Rectangle((int)position.X, (int)position.Y, (int)(24 * scale), (int)(30 * scale));
         public Hero(Texture2D texture, IInputReader inputReader)
         {
-
             health = 3;
             this.texture = texture;
             scale = 2;
@@ -57,24 +56,22 @@ namespace GameDevelopment.GameObject
             State = newState;
         }
 
-
         public void Draw(SpriteBatch spriteBatch)
         {
             float boundingBoxOffsetWidth = (32f - BoundingBox.Width/scale) / scale;
             if (lastDirection == SpriteEffects.None) boundingBoxOffsetWidth -= 3.5f;
             else boundingBoxOffsetWidth += 2f;
-            float boundingBoxOffsetHeight = (32f - BoundingBox.Height/scale);
-            spriteBatch.Draw(texture, position, animations[State].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(boundingBoxOffsetWidth, boundingBoxOffsetHeight), scale, lastDirection, 0);
 
+            float boundingBoxOffsetHeight = (32f - BoundingBox.Height/scale);
+
+            spriteBatch.Draw(texture, position, animations[State].CurrentFrame.SourceRectangle, Color.White, 0, new Vector2(boundingBoxOffsetWidth, boundingBoxOffsetHeight), scale, lastDirection, 0);
         }
 
-        public void ResetPosition()
+        public void ResetPosition(Vector2 newPosition)
         {
             State = IMovable.MovableState.Idle;
-
-            var spawnPosition = StateManager.getInstance().GetMap().SpawnPosition;
-            position = spawnPosition;
             speed = new Vector2(0, 0);
+            position = newPosition;
         }
 
         public void ResetHero()
@@ -83,28 +80,40 @@ namespace GameDevelopment.GameObject
             score = 0;
         }
 
-
         public void Update(GameTime gameTime)
         {
             Move();
             animations[State].Update(gameTime);
 
-            //TODO: Add coins & collision for them
-            //TODO: Detect when dead & change state to Dead
+            foreach (var coin in StateManager.getInstance().GetCoins())
+            {
+                if (!coin.Active)
+                    continue;
+                if (coin.CheckCollision(BoundingBox))
+                {
+                    score++;
+                    // Do level progression in Level class itself
+                    if (StateManager.getInstance().GetLevel().ProgressCoinTaken(coin))
+                        return; // Return if GameState has been changed to cancel the Update()
+                }
+            }
 
             foreach (var trap in StateManager.getInstance().GetTraps())
             {
+                if (!trap.Active)
+                    continue;
                 if (trap.CheckCollision(BoundingBox))
                 {
-                    // reduce health
                     --health;
-                    ResetPosition();
+                    ResetPosition(StateManager.getInstance().GetSpawnPosition());
                     return;
                 }
             }
 
             foreach (var enemy in StateManager.getInstance().GetEnemies())
             {
+                if (!enemy.Active)
+                    continue;
                 if (enemy.State == IMovable.MovableState.Dying)
                     continue;
                 if (enemy.CheckCollision(BoundingBox))
@@ -117,9 +126,8 @@ namespace GameDevelopment.GameObject
                     }
                     else
                     {
-                        // Reduce health
                         --health;
-                        ResetPosition();
+                        ResetPosition(StateManager.getInstance().GetSpawnPosition());
                         return;
                     }
                 }
