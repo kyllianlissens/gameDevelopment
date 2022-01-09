@@ -38,7 +38,7 @@ namespace GameDevelopment.GameState
         public override void PrepareLevel()
         {
             coinstaken = 0;
-            // Don't reset score and health when progression to level 2
+            // Don't reset score and health when progressing to level 2
             map.ResetMap();
             hero.ResetPosition(map.SpawnPosition);
         }

@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:background.png
 
+#begin bgmusic.ogg
+/importer:OggImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:bgmusic.ogg
+
 #begin block.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -5,6 +5,7 @@ using GameDevelopment.Texture;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,6 +31,7 @@ namespace GameDevelopment
         private SpriteFont _font;
 
         private Hero hero;
+        private Song _backgroundAudio;
         private Background background;
 
         public Game1()
@@ -45,7 +47,7 @@ namespace GameDevelopment
             base.Initialize();
 
             hero = new Hero(_heroTexture, new KeyboardReader());
-            background = new Background(_backgroundTexture);
+            background = new Background(_backgroundTexture, _backgroundAudio);
             background.Initialize();
 
             Menu.getInstance().Initialise(_font, _playButtonTexture);
@@ -72,6 +74,8 @@ namespace GameDevelopment
             _font = Content.Load<SpriteFont>("scoreFont");
             _healthicons = Content.Load<Texture2D>("healthui");
             _coin = Content.Load<Texture2D>("coin");
+
+            _backgroundAudio = Content.Load<Song>("bgmusic");
         }
 
         protected override void Update(GameTime gameTime)
